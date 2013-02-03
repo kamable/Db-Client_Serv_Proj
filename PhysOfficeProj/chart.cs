@@ -13,12 +13,10 @@ namespace PhysOfficeProj
 {
     public partial class chart : Form
     {
-        OdbcConnection conn = new OdbcConnection();
-        OdbcCommand cmd = new OdbcCommand();
-        OdbcDataReader readr;
+
         
-        string msg1 = "";
-        OdbcParameter p1; //LBE15
+//        string msg1 = "";
+//        OdbcParameter p1; //LBE15
 
         public chart()
         {
@@ -62,12 +60,38 @@ namespace PhysOfficeProj
         private void chart_Load(object sender, EventArgs e)
         {
             // on load of window make database connections 
-            conn.ConnectionString = "dsn=Physician";
-            conn.Open();
-            cmd.Connection = conn;
+            try
+            {
+                OdbcConnection conn = new OdbcConnection();
+                OdbcCommand cmd = new OdbcCommand();
+                OdbcDataReader readr;
 
-            cmd.CommandText = "select * from person";
-            cmd.Prepare();
+                conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                conn.Open();
+                cmd.Connection = conn;
+
+                string patSql = "select * from patient";
+                cmd.CommandText = patSql;
+
+                readr = cmd.ExecuteReader();
+
+                // get resultset 
+
+                while (readr.Read())
+                {
+                    int personId = Decimal.ToInt32(readr.GetDecimal(0));
+                    int patId = Decimal.ToInt32(readr.GetDecimal(1));
+                    string insurNum = readr.GetString(2);
+                    string insurCode = readr.GetString(3);
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("error" + ex.Message);
+            }
+            
+
         }
 
      

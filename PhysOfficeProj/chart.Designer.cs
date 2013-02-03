@@ -127,7 +127,7 @@
             this.physLab.Size = new System.Drawing.Size(52, 13);
             this.physLab.TabIndex = 8;
             this.physLab.Text = "Physician";
-            this.physLab.Click += new System.EventHandler(this.label3_Click);
+         
             // 
             // dobTxt
             // 
@@ -146,7 +146,7 @@
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "DOB:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            
             // 
             // allergyTxt
             // 
@@ -165,7 +165,7 @@
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Allergies";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            
             // 
             // patientData
             // 
@@ -274,7 +274,7 @@
             this.label11.Size = new System.Drawing.Size(41, 13);
             this.label11.TabIndex = 6;
             this.label11.Text = "Weight";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
+            
             // 
             // textBox4
             // 
@@ -492,7 +492,7 @@
             this.label5.Size = new System.Drawing.Size(38, 13);
             this.label5.TabIndex = 2;
             this.label5.Text = "Phone";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            
             // 
             // label4
             // 
