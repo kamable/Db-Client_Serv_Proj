@@ -63,7 +63,12 @@
             this.label13 = new System.Windows.Forms.Label();
             this.medCombo = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.stateTxt = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.genderTxt = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.hmePhoneTxt = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.nameTxt = new System.Windows.Forms.TextBox();
@@ -81,17 +86,26 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.zipTxt = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.wrkPhoneTxt = new System.Windows.Forms.TextBox();
+            this.Email = new System.Windows.Forms.Label();
+            this.emailTxt = new System.Windows.Forms.TextBox();
+            this.labDatePick = new System.Windows.Forms.DateTimePicker();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.patientData.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPatHist.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -127,7 +141,6 @@
             this.physLab.Size = new System.Drawing.Size(52, 13);
             this.physLab.TabIndex = 8;
             this.physLab.Text = "Physician";
-         
             // 
             // dobTxt
             // 
@@ -146,7 +159,6 @@
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "DOB:";
-            
             // 
             // allergyTxt
             // 
@@ -165,7 +177,6 @@
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Allergies";
-            
             // 
             // patientData
             // 
@@ -274,7 +285,6 @@
             this.label11.Size = new System.Drawing.Size(41, 13);
             this.label11.TabIndex = 6;
             this.label11.Text = "Weight";
-            
             // 
             // textBox4
             // 
@@ -338,9 +348,10 @@
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.groupBox3.Location = new System.Drawing.Point(519, 194);
+            this.groupBox3.Controls.Add(this.dataGridView1);
+            this.groupBox3.Location = new System.Drawing.Point(482, 204);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(414, 362);
+            this.groupBox3.Size = new System.Drawing.Size(451, 352);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Appointments";
@@ -432,7 +443,17 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.emailTxt);
+            this.groupBox1.Controls.Add(this.Email);
+            this.groupBox1.Controls.Add(this.wrkPhoneTxt);
+            this.groupBox1.Controls.Add(this.label23);
+            this.groupBox1.Controls.Add(this.zipTxt);
+            this.groupBox1.Controls.Add(this.label22);
+            this.groupBox1.Controls.Add(this.stateTxt);
+            this.groupBox1.Controls.Add(this.label21);
+            this.groupBox1.Controls.Add(this.genderTxt);
+            this.groupBox1.Controls.Add(this.label20);
+            this.groupBox1.Controls.Add(this.hmePhoneTxt);
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.nameTxt);
@@ -442,17 +463,58 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(23, 19);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(395, 157);
+            this.groupBox1.Size = new System.Drawing.Size(910, 157);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Demographics";
             // 
-            // textBox3
+            // label22
             // 
-            this.textBox3.Location = new System.Drawing.Point(76, 127);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 7;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(171, 122);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(22, 13);
+            this.label22.TabIndex = 12;
+            this.label22.Text = "Zip";
+            // 
+            // stateTxt
+            // 
+            this.stateTxt.Location = new System.Drawing.Point(78, 116);
+            this.stateTxt.Name = "stateTxt";
+            this.stateTxt.Size = new System.Drawing.Size(86, 20);
+            this.stateTxt.TabIndex = 11;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(20, 116);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(32, 13);
+            this.label21.TabIndex = 10;
+            this.label21.Text = "State";
+            // 
+            // genderTxt
+            // 
+            this.genderTxt.Location = new System.Drawing.Point(421, 20);
+            this.genderTxt.Name = "genderTxt";
+            this.genderTxt.Size = new System.Drawing.Size(34, 20);
+            this.genderTxt.TabIndex = 9;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(334, 27);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(42, 13);
+            this.label20.TabIndex = 8;
+            this.label20.Text = "Gender";
+            // 
+            // hmePhoneTxt
+            // 
+            this.hmePhoneTxt.Location = new System.Drawing.Point(421, 56);
+            this.hmePhoneTxt.Name = "hmePhoneTxt";
+            this.hmePhoneTxt.Size = new System.Drawing.Size(100, 20);
+            this.hmePhoneTxt.TabIndex = 7;
             // 
             // textBox2
             // 
@@ -487,12 +549,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(20, 127);
+            this.label5.Location = new System.Drawing.Point(334, 59);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Phone";
-            
+            this.label5.Text = "Home Phone";
             // 
             // label4
             // 
@@ -538,6 +599,7 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.groupBox4.Controls.Add(this.labDatePick);
             this.groupBox4.Controls.Add(this.richTextBox2);
             this.groupBox4.Controls.Add(this.label19);
             this.groupBox4.Controls.Add(this.testCombo);
@@ -609,6 +671,60 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
+            // zipTxt
+            // 
+            this.zipTxt.Location = new System.Drawing.Point(199, 119);
+            this.zipTxt.Name = "zipTxt";
+            this.zipTxt.Size = new System.Drawing.Size(63, 20);
+            this.zipTxt.TabIndex = 13;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(334, 88);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(67, 13);
+            this.label23.TabIndex = 14;
+            this.label23.Text = "Work Phone";
+            // 
+            // wrkPhoneTxt
+            // 
+            this.wrkPhoneTxt.Location = new System.Drawing.Point(421, 87);
+            this.wrkPhoneTxt.Name = "wrkPhoneTxt";
+            this.wrkPhoneTxt.Size = new System.Drawing.Size(100, 20);
+            this.wrkPhoneTxt.TabIndex = 15;
+            // 
+            // Email
+            // 
+            this.Email.AutoSize = true;
+            this.Email.Location = new System.Drawing.Point(628, 26);
+            this.Email.Name = "Email";
+            this.Email.Size = new System.Drawing.Size(32, 13);
+            this.Email.TabIndex = 16;
+            this.Email.Text = "Email";
+            // 
+            // emailTxt
+            // 
+            this.emailTxt.Location = new System.Drawing.Point(680, 20);
+            this.emailTxt.Name = "emailTxt";
+            this.emailTxt.Size = new System.Drawing.Size(160, 20);
+            this.emailTxt.TabIndex = 17;
+            // 
+            // labDatePick
+            // 
+            this.labDatePick.Location = new System.Drawing.Point(404, 44);
+            this.labDatePick.Name = "labDatePick";
+            this.labDatePick.Size = new System.Drawing.Size(200, 20);
+            this.labDatePick.TabIndex = 7;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(19, 19);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(411, 315);
+            this.dataGridView1.TabIndex = 0;
+            // 
             // chart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -626,6 +742,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -634,6 +751,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -658,7 +776,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox hmePhoneTxt;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox nameTxt;
@@ -693,6 +811,18 @@
         private System.Windows.Forms.ComboBox testCombo;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.TextBox genderTxt;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox stateTxt;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox zipTxt;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox wrkPhoneTxt;
+        private System.Windows.Forms.Label Email;
+        private System.Windows.Forms.TextBox emailTxt;
+        private System.Windows.Forms.DateTimePicker labDatePick;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Odbc;
+using MySql.Data.MySqlClient;
 
 namespace PhysOfficeProj
 {
@@ -21,6 +22,7 @@ namespace PhysOfficeProj
         public chart()
         {
             InitializeComponent();
+            getAppointmentData();
 
         }
 
@@ -57,6 +59,58 @@ namespace PhysOfficeProj
 
         }
 
+
+
+            /*
+             * Method to get appointment data from mysql database 
+             * poulate data grid  
+             * 
+             **/
+
+
+        public void getAppointmentData()
+        {
+            string mySqlConn =  @"server=localhost;userid=root;
+            password=;database=ereceptionist_mysql";
+
+           
+
+                MySqlConnection MYSQLconn = null;
+                MySqlDataReader mysqlRead = null;
+
+                try 
+                {
+                    MYSQLconn = new MySqlConnection(mySqlConn);
+                    MYSQLconn.Open();
+
+                      string stm = "select * from appointment";   
+                      MySqlCommand cmd = new MySqlCommand(stm, MYSQLconn);
+
+                      mysqlRead =  cmd.ExecuteReader();
+
+                    while(mysqlRead.Read())
+                    { 
+
+                    }
+
+                   // MessageBox.Show("MySQL version : {1}", version);
+
+                } catch (MySqlException ex) 
+                {
+                    MessageBox.Show("Error: {0}",  ex.ToString());
+
+                } finally 
+                {          
+                    if (MYSQLconn != null) 
+                    {
+                        MYSQLconn.Close();
+                    }
+                }
+            
+
+        }
+
+
         private void chart_Load(object sender, EventArgs e)
         {
             // on load of window make database connections 
@@ -90,9 +144,12 @@ namespace PhysOfficeProj
             {
                 MessageBox.Show("error" + ex.Message);
             }
-            
 
+
+           
         }
+
+
 
      
     }
