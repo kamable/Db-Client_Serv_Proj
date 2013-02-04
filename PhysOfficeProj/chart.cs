@@ -135,13 +135,40 @@ namespace PhysOfficeProj
            
         }
 
+
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
            
             int row = dataGridView1.SelectedCells[0].RowIndex;
             string curRow = dataGridView1.Rows[row].Cells[0].Value.ToString();
-            MessageBox.Show("row selected "+curRow);
+           // MessageBox.Show("row selected "+curRow);
             load_Patient(curRow);
+        }
+
+        private void getAllergies(int person)
+        {
+            OdbcConnection conn = new OdbcConnection();
+            OdbcCommand cmd = new OdbcCommand();
+            OdbcDataReader readr;
+
+            conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+            conn.Open();
+            cmd.Connection = conn;
+
+            string allergySql = "select allergy_description from allergy where person_id = "+ person; // select patient related data
+            cmd.CommandText = allergySql;
+
+            readr = cmd.ExecuteReader();
+            
+            while(readr.Read())
+            {
+                String allergy = readr.GetString(0);
+
+                allergyTxt.Text = allergy;
+            }
+
+            conn.Close();
+
         }
 
         /*
@@ -170,6 +197,9 @@ namespace PhysOfficeProj
 
                 readr = cmd.ExecuteReader();
 
+                int CURRENT_PAT = 0;
+                int CURRENT_PER = 0;
+
                 // get resultset 
 
                 while (readr.Read())
@@ -183,16 +213,53 @@ namespace PhysOfficeProj
                     string lname = readr.GetString(6);
                     string mname = readr.GetString(7);
                     DateTime dob = readr.GetDateTime(8);
+                    string gender = readr.GetString(9);
+                    string address = readr.GetString(10);
+                    string state = readr.GetString(11);
+                    string city = readr.GetString(12);
+                    int zip = Decimal.ToInt32(readr.GetDecimal(13));
+                    Int64 wrkPhone = readr.GetInt64(14);
+                    Int64 hmePhone = readr.GetInt64(15);
+                    Int64 pager = readr.GetInt64(16);
+                    string email1 = readr.GetString(17);
+                    string email2 = readr.GetString(18);
 
 
+                    // assign the values to data elements on GUI 
+                    nameTxt.Text = fname + "  " + mname + "  " + lname;
+                    addrTxt.Text = address;
+                    stateTxt.Text = state.ToString();
+                    zipTxt.Text = zip.ToString();
+                    genderTxt.Text = gender;
+                    hmePhoneTxt.Text = hmePhone.ToString();
+                    wrkPhoneTxt.Text = wrkPhone.ToString();
+                    emailTxt.Text = email1;
+
+
+                    // track the current patient 
+                    CURRENT_PAT = patId;
+                    CURRENT_PER = personId;
+
+                    //MessageBox.Show(fname + mname + lname);       
 
                 }
 
+                conn.Close();
+
+                getAllergies(CURRENT_PER);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("error" + ex.Message);
             }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = dataGridView1.SelectedCells[0].RowIndex;
+            string curRow = dataGridView1.Rows[row].Cells[0].Value.ToString();
+            // MessageBox.Show("row selected "+curRow);
+            load_Patient(curRow);
         }
   
 
