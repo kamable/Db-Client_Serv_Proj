@@ -77,21 +77,37 @@ namespace PhysOfficeProj
 
                 MySqlConnection MYSQLconn = null;
                 MySqlDataReader mysqlRead = null;
+                MySqlDataAdapter sqlDataAdapt = null;
+                DataSet aptData = null;
+                DataTable aptDataTab = null;
 
                 try 
                 {
                     MYSQLconn = new MySqlConnection(mySqlConn);
                     MYSQLconn.Open();
 
-                      string stm = "select * from appointment";   
-                      MySqlCommand cmd = new MySqlCommand(stm, MYSQLconn);
+                      string stm = "select patient_id,appt_begin,appt_end,appt_reason from appointment";   
+                      //MySqlCommand cmd = new MySqlCommand(stm, MYSQLconn);
 
-                      mysqlRead =  cmd.ExecuteReader();
+                      sqlDataAdapt = new MySqlDataAdapter(stm, MYSQLconn);
+                      aptData = new DataSet();
 
-                    while(mysqlRead.Read())
-                    { 
+                      aptDataTab = new DataTable();
+                      sqlDataAdapt.Fill(aptDataTab);
+                      
+                     // sqlDataAdapt.Fill(aptData,"Appointments");
+                      
 
-                    }
+                    //  dataGridView1.DataSource = aptData.Tables["Appointments"];
+                      dataGridView1.DataSource = aptDataTab;
+                      
+
+                      //mysqlRead =  cmd.ExecuteReader();
+
+                    //while(mysqlRead.Read())
+                    //{ 
+
+                    //}
 
                    // MessageBox.Show("MySQL version : {1}", version);
 
@@ -113,6 +129,31 @@ namespace PhysOfficeProj
 
         private void chart_Load(object sender, EventArgs e)
         {
+      
+
+
+           
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+            int row = dataGridView1.SelectedCells[0].RowIndex;
+            string curRow = dataGridView1.Rows[row].Cells[0].Value.ToString();
+            MessageBox.Show("row selected "+curRow);
+            load_Patient(curRow);
+        }
+
+        /*
+         *  Method to load a given patient record and 
+         *  populate the appropriate fields in the chart 
+         * 
+         * 
+         *  @ author Kwesi Amable 
+         * */
+
+        private void load_Patient(string patID)
+        {
             // on load of window make database connections 
             try
             {
@@ -124,7 +165,7 @@ namespace PhysOfficeProj
                 conn.Open();
                 cmd.Connection = conn;
 
-                string patSql = "select * from patient";
+                string patSql = "select * from patient join person on person.person_id = patient.patient_id where patient.patient_id =" + patID; // select patient related data
                 cmd.CommandText = patSql;
 
                 readr = cmd.ExecuteReader();
@@ -137,17 +178,23 @@ namespace PhysOfficeProj
                     int patId = Decimal.ToInt32(readr.GetDecimal(1));
                     string insurNum = readr.GetString(2);
                     string insurCode = readr.GetString(3);
+                    int personId2 = Decimal.ToInt32(readr.GetDecimal(4));
+                    string fname = readr.GetString(5);
+                    string lname = readr.GetString(6);
+                    string mname = readr.GetString(7);
+                    DateTime dob = readr.GetDateTime(8);
+
+
+
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("error" + ex.Message);
             }
-
-
-           
         }
+  
 
 
 
