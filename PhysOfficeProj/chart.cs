@@ -23,6 +23,7 @@ namespace PhysOfficeProj
         {
             InitializeComponent();
             getAppointmentData();
+            popLabPat();
 
         }
 
@@ -54,10 +55,7 @@ namespace PhysOfficeProj
 
   
 
-        private void patCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
 
 
 
@@ -125,21 +123,18 @@ namespace PhysOfficeProj
 
         private void chart_Load(object sender, EventArgs e)
         {
-      
-
-
            
         }
 
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+      /*  private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
            
             int row = dataGridView1.SelectedCells[0].RowIndex;
             string curRow = dataGridView1.Rows[row].Cells[0].Value.ToString();
            // MessageBox.Show("row selected "+curRow);
             load_Patient(curRow);
-        }
+        }*/
 
         private void getMeds(int visit)
         {
@@ -372,6 +367,7 @@ namespace PhysOfficeProj
                     emailTxt.Text = email1;
                     dobTxt.Text = dob.ToShortDateString();
 
+                    //patCombo.Items.Add(fname + "  " + mname + "  " + lname);
 
                     // track the current patient 
                     CURRENT_PAT = patId;
@@ -383,14 +379,61 @@ namespace PhysOfficeProj
 
                 conn.Close();
 
-                getAllergies(CURRENT_PER);
-                getVitals(CURRENT_PAT);
+                getAllergies(CURRENT_PER);// get allergy information 
+                getVitals(CURRENT_PAT);   // get vital signs 
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("error" + ex.Message);
             }
         }
+
+        /*
+         *  Method to populate lab order field with 
+         *  exsisting patients 
+         * 
+         * */
+
+       private void popLabPat()
+       {
+
+
+           try
+           {
+               OdbcConnection conn = new OdbcConnection();
+               OdbcCommand cmd = new OdbcCommand();
+               OdbcDataReader readr;
+
+               conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+               conn.Open();
+               cmd.Connection = conn;
+
+               string patCombSql = "Select person_id,fname, midname, lname from person ";
+
+               cmd.CommandText = patCombSql;
+
+               readr = cmd.ExecuteReader();
+
+               while (readr.Read())
+               {
+
+                   int Id = Decimal.ToInt32(readr.GetDecimal(0));
+                   string fname = readr.GetString(1);
+                   string lname = readr.GetString(2);
+                   string mname = readr.GetString(3);
+
+                   patCombo.Items.Add(fname+" "+mname+" "+lname);
+               }
+
+           }
+           catch (Exception ex)
+           {
+
+           }
+          
+
+       }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -399,6 +442,24 @@ namespace PhysOfficeProj
             // MessageBox.Show("row selected "+curRow);
             load_Patient(curRow);
         }
+
+
+        private void patCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show(patCombo.SelectedIndex.ToString());
+        }
+
+
+        private void labOrderBut_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(patCombo.SelectedIndex.ToString());
+        }
+
+     
+
+    
+
+     
   
 
 

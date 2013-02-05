@@ -13,6 +13,7 @@ Global
 		{176E1451-CDF5-4EF3-9498-2467255C47E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{176E1451-CDF5-4EF3-9498-2467255C47E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{176E1451-CDF5-4EF3-9498-2467255C47E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{176E1451-CDF5-4EF3-9498-2467255C47E2}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
