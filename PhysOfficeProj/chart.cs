@@ -86,7 +86,7 @@ namespace PhysOfficeProj
                     MYSQLconn = new MySqlConnection(mySqlConn);
                     MYSQLconn.Open();
 
-                      string stm = "select patient_id,appt_begin,appt_end,appt_reason from appointment";   
+                    string stm = "select patient_id as 'PATIENT',FROM_UNIXTIME(appt_begin) as 'APPT_BEGIN',FROM_UNIXTIME(appt_end) as 'APPT_END',appt_reason as 'CHIEF COMPLAINT' from appointment";   
                       //MySqlCommand cmd = new MySqlCommand(stm, MYSQLconn);
 
                       sqlDataAdapt = new MySqlDataAdapter(stm, MYSQLconn);
@@ -145,30 +145,94 @@ namespace PhysOfficeProj
             load_Patient(curRow);
         }
 
-        private void getAllergies(int person)
+        private void  getVitals(int person)
         {
-            OdbcConnection conn = new OdbcConnection();
-            OdbcCommand cmd = new OdbcCommand();
-            OdbcDataReader readr;
-
-            conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
-            conn.Open();
-            cmd.Connection = conn;
-
-            string allergySql = "select allergy_description from allergy where person_id = "+ person; // select patient related data
-            cmd.CommandText = allergySql;
-
-            readr = cmd.ExecuteReader();
-            
-            while(readr.Read())
+            try
             {
-                String allergy = readr.GetString(0);
+                OdbcConnection conn = new OdbcConnection();
+                OdbcCommand cmd = new OdbcCommand();
+                OdbcDataReader readr;
 
-                allergyTxt.Text = allergy;
+                conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                conn.Open();
+                cmd.Connection = conn;
+
+
+                string vitalSql = "select s.blood_pressure, s.pulse,s.respiration, s.weight, s.temperature from vital_signal s " +
+                                   "join visit v on v.visit#  = s.visit# " +
+                                    "join  person p on p.person_id = v.person_id where p.person_id =" + person;
+
+                cmd.CommandText = vitalSql;
+
+                readr = cmd.ExecuteReader();
+
+                while (readr.Read())
+                {
+                    string blodPres = readr.GetString(0);
+                    int pulse = Decimal.ToInt32(readr.GetDecimal(1));
+                    int respire = Decimal.ToInt32(readr.GetDecimal(2));
+                    int weight = Decimal.ToInt32(readr.GetDecimal(3));
+                    int heat = Decimal.ToInt32(readr.GetDecimal(4));
+
+
+                    //populate feilds iu chart 
+                    bp1.Text = blodPres;
+                    plseTxt.Text = pulse.ToString();
+                    resprTxt.Text = respire.ToString();
+                    heavTxt.Text = weight.ToString();
+                    hotTxt.Text = heat.ToString();
+ 
+                    
+
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error" + ex.Message);
             }
 
-            conn.Close();
+        }
 
+
+
+
+
+        private void getAllergies(int person)
+        {
+            try
+            {
+                OdbcConnection conn = new OdbcConnection();
+                OdbcCommand cmd = new OdbcCommand();
+                OdbcDataReader readr;
+
+                conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                conn.Open();
+                cmd.Connection = conn;
+
+                string allergySql = "select allergy_description from allergy where person_id = "+ person; // select patient related data
+                cmd.CommandText = allergySql;
+
+                readr = cmd.ExecuteReader();
+            
+                while(readr.Read())
+                {
+                    String allergy = readr.GetString(0);
+
+                    allergyTxt.Text = allergy;
+                }
+
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error" + ex.Message);
+            }
+            
+
+           
         }
 
         /*
@@ -234,6 +298,7 @@ namespace PhysOfficeProj
                     hmePhoneTxt.Text = hmePhone.ToString();
                     wrkPhoneTxt.Text = wrkPhone.ToString();
                     emailTxt.Text = email1;
+                    dobTxt.Text = dob.ToShortDateString();
 
 
                     // track the current patient 
@@ -247,6 +312,7 @@ namespace PhysOfficeProj
                 conn.Close();
 
                 getAllergies(CURRENT_PER);
+                getVitals(CURRENT_PAT);
             }
             catch (Exception ex)
             {
