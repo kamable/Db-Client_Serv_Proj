@@ -96,19 +96,15 @@ namespace PhysOfficeProj
                       sqlDataAdapt.Fill(aptDataTab);
                       
                      // sqlDataAdapt.Fill(aptData,"Appointments");
-                      
-
-                    //  dataGridView1.DataSource = aptData.Tables["Appointments"];
-                      dataGridView1.DataSource = aptDataTab;
+                     //  dataGridView1.DataSource = aptData.Tables["Appointments"];
+                     
+                    dataGridView1.DataSource = aptDataTab;
                       
 
                       //mysqlRead =  cmd.ExecuteReader();
-
-                    //while(mysqlRead.Read())
+                     //while(mysqlRead.Read())
                     //{ 
-
                     //}
-
                    // MessageBox.Show("MySQL version : {1}", version);
 
                 } catch (MySqlException ex) 
@@ -145,6 +141,79 @@ namespace PhysOfficeProj
             load_Patient(curRow);
         }
 
+        private void getMeds(int visit)
+        {
+           
+            try
+            {
+                OdbcConnection conn = new OdbcConnection();
+                OdbcCommand cmd = new OdbcCommand();
+                OdbcDataAdapter medAdapt;
+                DataSet medData = null;
+                DataTable medDataTab = null;
+
+                conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                conn.Open();
+                cmd.Connection = conn;
+
+                string medSql = "select m.med_name, m.med_dose,m.med_dose_unit, m.med_frequency, m.units, m.med_route from medication m " +
+                                 "join physical_exam p on p.phy_ex# = m.phy_ex# join visit v on v.visit# = p.visit# where p.visit# = "+ visit;
+
+
+                medAdapt = new OdbcDataAdapter(medSql, conn);
+                medData = new DataSet();
+
+                medDataTab = new DataTable();
+                medAdapt.Fill(medDataTab);
+
+                // sqlDataAdapt.Fill(aptData,"Appointments");
+
+
+                //  dataGridView1.DataSource = aptData.Tables["Appointments"];
+              medDataGrid.DataSource = medDataTab;
+               
+
+       
+
+                conn.Close();
+
+                getHistory(visit);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
+                
+        }
+
+
+        private void getHistory(int visit)
+        {
+            OdbcConnection conn = new OdbcConnection();
+            OdbcCommand cmd = new OdbcCommand();
+            OdbcDataReader readr;
+
+            conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+            conn.Open();
+            cmd.Connection = conn;
+
+            string vitalSql = " select phy_hist from physical_exam where visit# = " + visit;
+
+            cmd.CommandText = vitalSql;
+
+            readr = cmd.ExecuteReader();
+
+            while (readr.Read())
+            {
+                string history = readr.GetString(0);
+                histTxtArea.Text = history;
+            }
+
+            
+        }
+
         private void  getVitals(int person)
         {
             try
@@ -158,13 +227,15 @@ namespace PhysOfficeProj
                 cmd.Connection = conn;
 
 
-                string vitalSql = "select s.blood_pressure, s.pulse,s.respiration, s.weight, s.temperature from vital_signal s " +
+                string vitalSql = "select s.blood_pressure, s.pulse,s.respiration, s.weight, s.temperature,s.visit# from vital_signal s " +
                                    "join visit v on v.visit#  = s.visit# " +
                                     "join  person p on p.person_id = v.person_id where p.person_id =" + person;
 
                 cmd.CommandText = vitalSql;
 
                 readr = cmd.ExecuteReader();
+
+                int CURRVIST = 0;
 
                 while (readr.Read())
                 {
@@ -173,7 +244,7 @@ namespace PhysOfficeProj
                     int respire = Decimal.ToInt32(readr.GetDecimal(2));
                     int weight = Decimal.ToInt32(readr.GetDecimal(3));
                     int heat = Decimal.ToInt32(readr.GetDecimal(4));
-
+                    CURRVIST = Decimal.ToInt32(readr.GetDecimal(5));
 
                     //populate feilds iu chart 
                     bp1.Text = blodPres;
@@ -187,6 +258,7 @@ namespace PhysOfficeProj
                 }
 
                 conn.Close();
+                getMeds(CURRVIST);
             }
             catch (Exception ex)
             {
