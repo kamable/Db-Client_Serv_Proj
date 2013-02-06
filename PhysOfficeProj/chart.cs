@@ -446,8 +446,37 @@ namespace PhysOfficeProj
 
         private void patCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show(patCombo.SelectedIndex.ToString());
+            //MessageBox.Show(patCombo.SelectedIndex.ToString());
+            OdbcConnection conn = new OdbcConnection();
+            OdbcCommand cmd = new OdbcCommand();
+            OdbcDataAdapter labAdapt;
+            DataSet labData = null;
+            DataTable labDataTab = null;
 
+            conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+            conn.Open();
+            cmd.Connection = conn;
+
+            string medSql = "select l.lab_order#,l.collect_date,l.status,l.notes,l.test_name from lab_order l join visit v on v.visit# = l.visit# "+
+                            "join person p  on p.person_id = v.person_id where p.person_id = " + patCombo.SelectedIndex+1;
+
+
+            labAdapt = new OdbcDataAdapter(medSql, conn);
+            labData = new DataSet();
+
+            labDataTab = new DataTable();
+            labAdapt.Fill(labDataTab);
+
+            // sqlDataAdapt.Fill(aptData,"Appointments");
+
+
+            //  dataGridView1.DataSource = aptData.Tables["Appointments"];
+            labDataGrid.DataSource = labDataTab;
+
+
+
+
+            conn.Close();
 
         }
 
@@ -492,6 +521,8 @@ namespace PhysOfficeProj
 
                            readr = cmd.ExecuteReader();
 
+                           
+
                            while (readr.Read())
                            {
                                lastVisit = readr.GetInt16(0);
@@ -533,15 +564,20 @@ namespace PhysOfficeProj
 
                             cmdIns.CommandText = "Insert into PHYS_ADMIN.LAB_ORDER(LAB_ORDER#,VISIT#,COLLECT_DATE,STATUS,NOTES,TEST_NAME) values (:LAB_ORDER#,:VISIT#,:COLLECT_DATE,:STATUS,:NOTES,:TEST_NAME)";
 
+                            cmdIns.Prepare();
+
                             cmdIns.Parameters.AddWithValue("VISIT#", lastVisit);
                             cmdIns.Parameters.AddWithValue("PERSON_ID", patCombo.SelectedIndex + 1);
                             cmdIns.Parameters.AddWithValue("COLLECT_DATE", labDatePick.Value);
-                            cmdIns.Parameters.AddWithValue("STATUS",statCombo.SelectedValue );
+                            cmdIns.Parameters.AddWithValue("STATUS",statCombo.Text );
                             cmdIns.Parameters.AddWithValue("NOTES", testNotArea.Text);
-                            cmdIns.Parameters.AddWithValue("TEST_NAME",testCombo.SelectedValue);
-                            
-                            
+                            cmdIns.Parameters.AddWithValue("TEST_NAME",testCombo.Text);
 
+                            cmdIns.ExecuteNonQuery();
+
+                            MessageBox.Show("Order Created");
+
+                            cmdIns.Parameters.Clear();
                         }
                         catch (Exception ex)
                         {
@@ -553,6 +589,14 @@ namespace PhysOfficeProj
 
                 
             }
+        }
+
+        private void clearBut_Click(object sender, EventArgs e)
+        {
+            patCombo.ResetText();
+            DateLab.ResetText();
+            testNotArea.ResetText();
+            testCombo.ResetText();
         }
 
      

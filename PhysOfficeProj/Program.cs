@@ -16,7 +16,8 @@ namespace PhysOfficeProj
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new chart());
+           // Application.Run(new login());
+           Application.Run(new chart());
         }
     }
 }
