@@ -93,6 +93,10 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.statCombo = new System.Windows.Forms.ComboBox();
+            this.DateLab = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.patientData.SuspendLayout();
             this.patientTab.SuspendLayout();
@@ -106,8 +110,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.medDataGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.labTab.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -638,6 +644,7 @@
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.LightGreen;
+            this.groupBox5.Controls.Add(this.dataGridView2);
             this.groupBox5.Location = new System.Drawing.Point(18, 358);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(716, 208);
@@ -649,6 +656,9 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(103)))), ((int)(((byte)(187)))));
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.DateLab);
+            this.groupBox4.Controls.Add(this.statCombo);
             this.groupBox4.Controls.Add(this.labOrderBut);
             this.groupBox4.Controls.Add(this.labDatePick);
             this.groupBox4.Controls.Add(this.testNotArea);
@@ -681,8 +691,11 @@
             // 
             // labDatePick
             // 
-            this.labDatePick.Location = new System.Drawing.Point(404, 44);
+            this.labDatePick.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
+            this.labDatePick.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.labDatePick.Location = new System.Drawing.Point(388, 45);
             this.labDatePick.Name = "labDatePick";
+            this.labDatePick.RightToLeftLayout = true;
             this.labDatePick.Size = new System.Drawing.Size(200, 20);
             this.labDatePick.TabIndex = 7;
             // 
@@ -690,7 +703,7 @@
             // 
             this.testNotArea.Location = new System.Drawing.Point(123, 140);
             this.testNotArea.Name = "testNotArea";
-            this.testNotArea.Size = new System.Drawing.Size(201, 96);
+            this.testNotArea.Size = new System.Drawing.Size(465, 96);
             this.testNotArea.TabIndex = 6;
             this.testNotArea.Text = "";
             // 
@@ -706,6 +719,15 @@
             // testCombo
             // 
             this.testCombo.FormattingEnabled = true;
+            this.testCombo.Items.AddRange(new object[] {
+            "Biopsy",
+            "Glucose ",
+            "CBC ",
+            "Hematocrit",
+            "Lactate",
+            "Liver Function",
+            "HDL ",
+            "LDL"});
             this.testCombo.Location = new System.Drawing.Point(123, 83);
             this.testCombo.Name = "testCombo";
             this.testCombo.Size = new System.Drawing.Size(121, 21);
@@ -744,6 +766,44 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
+            // statCombo
+            // 
+            this.statCombo.FormattingEnabled = true;
+            this.statCombo.Items.AddRange(new object[] {
+            "SENT ",
+            "REC"});
+            this.statCombo.Location = new System.Drawing.Point(388, 82);
+            this.statCombo.Name = "statCombo";
+            this.statCombo.Size = new System.Drawing.Size(121, 21);
+            this.statCombo.TabIndex = 9;
+            // 
+            // DateLab
+            // 
+            this.DateLab.AutoSize = true;
+            this.DateLab.Location = new System.Drawing.Point(324, 47);
+            this.DateLab.Name = "DateLab";
+            this.DateLab.Size = new System.Drawing.Size(34, 13);
+            this.DateLab.TabIndex = 10;
+            this.DateLab.Text = "Date";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(327, 90);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(43, 13);
+            this.label13.TabIndex = 11;
+            this.label13.Text = "Status";
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 16);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(710, 189);
+            this.dataGridView2.TabIndex = 0;
+            // 
             // chart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -772,9 +832,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.labTab.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -841,6 +903,10 @@
         private System.Windows.Forms.DataGridView medDataGrid;
         private System.Windows.Forms.RichTextBox histTxtArea;
         private System.Windows.Forms.Button labOrderBut;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label DateLab;
+        private System.Windows.Forms.ComboBox statCombo;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }
 

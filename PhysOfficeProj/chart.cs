@@ -429,7 +429,7 @@ namespace PhysOfficeProj
            }
            catch (Exception ex)
            {
-
+               MessageBox.Show("error" + ex.Message);
            }
           
 
@@ -447,12 +447,112 @@ namespace PhysOfficeProj
         private void patCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             MessageBox.Show(patCombo.SelectedIndex.ToString());
+
+
         }
 
 
         private void labOrderBut_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(patCombo.SelectedIndex.ToString());
+            //MessageBox.Show(patCombo.SelectedIndex.ToString());
+
+                    OdbcConnection conn = new OdbcConnection();
+                    OdbcCommand cmd = new OdbcCommand();
+                    OdbcDataReader readr;
+
+                    OdbcConnection connIns = new OdbcConnection();
+                    OdbcCommand cmdIns = new OdbcCommand();
+                   
+
+
+                    OdbcParameter p1;
+                    OdbcParameter p2;
+                    //OdbcParameter p3;
+
+
+           int lastVisit=0;
+
+            if (patCombo.SelectedIndex < 0 || testCombo.SelectedIndex < 0 || labDatePick.Text == " " || statCombo.SelectedIndex < 0)
+            {
+                MessageBox.Show("Please select Patient,Test and Date");
+            }
+            else
+            {
+                        try 
+                        {
+
+
+                           conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                           conn.Open();
+                           cmd.Connection = conn;
+
+                            string lastVisitSql = "select max(visit#) from visit ";
+
+                            cmd.CommandText = lastVisitSql;
+
+                           readr = cmd.ExecuteReader();
+
+                           while (readr.Read())
+                           {
+                               lastVisit = readr.GetInt16(0);
+                           }
+
+                           conn.Close();
+                           readr.Close();
+
+                                                      
+                           
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("error" + ex.Message); 
+                    }
+
+
+                        try
+                        {
+
+
+                            /// insert query 
+
+                            connIns.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                            connIns.Open();
+                            cmdIns.Connection = connIns;
+
+                            cmdIns.CommandText = "INSERT INTO PHYS_ADMIN.VISIT (VISIT#,PERSON_ID,ADMIT_DATE) VALUES (:VISIT#,:PERSON_ID,:ADMIT_DATE)";
+                            cmdIns.Prepare();
+
+                            lastVisit = lastVisit + 1;
+                            cmdIns.Parameters.AddWithValue("VISIT#",lastVisit);
+                            cmdIns.Parameters.AddWithValue("PERSON_ID",patCombo.SelectedIndex+1);
+                            cmdIns.Parameters.AddWithValue("ADMIT_DATE",labDatePick.Value);
+                                                                                
+
+                            cmdIns.ExecuteNonQuery();
+                            cmdIns.Parameters.Clear();
+
+                            cmdIns.CommandText = "Insert into PHYS_ADMIN.LAB_ORDER(LAB_ORDER#,VISIT#,COLLECT_DATE,STATUS,NOTES,TEST_NAME) values (:LAB_ORDER#,:VISIT#,:COLLECT_DATE,:STATUS,:NOTES,:TEST_NAME)";
+
+                            cmdIns.Parameters.AddWithValue("VISIT#", lastVisit);
+                            cmdIns.Parameters.AddWithValue("PERSON_ID", patCombo.SelectedIndex + 1);
+                            cmdIns.Parameters.AddWithValue("COLLECT_DATE", labDatePick.Value);
+                            cmdIns.Parameters.AddWithValue("STATUS",statCombo.SelectedValue );
+                            cmdIns.Parameters.AddWithValue("NOTES", testNotArea.Text);
+                            cmdIns.Parameters.AddWithValue("TEST_NAME",testCombo.SelectedValue);
+                            
+                            
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("error" + ex.Message); 
+                        }
+
+               
+
+
+                
+            }
         }
 
      
