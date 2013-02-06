@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Odbc;
 using MySql.Data.MySqlClient;
+//using Oracle.DataAccess.Client;
+using System.Data.OracleClient;
+
 
 namespace PhysOfficeProj
 {
@@ -23,7 +26,7 @@ namespace PhysOfficeProj
         {
             InitializeComponent();
             getAppointmentData();
-            popLabPat();
+            popPat();
 
         }
 
@@ -72,12 +75,14 @@ namespace PhysOfficeProj
             password=;database=ereceptionist_mysql";
 
            
-
+                
                 MySqlConnection MYSQLconn = null;
                 MySqlDataReader mysqlRead = null;
                 MySqlDataAdapter sqlDataAdapt = null;
                 DataSet aptData = null;
                 DataTable aptDataTab = null;
+
+           
 
                 try 
                 {
@@ -395,7 +400,7 @@ namespace PhysOfficeProj
          * 
          * */
 
-       private void popLabPat()
+      /* private void popLabPat()
        {
 
 
@@ -409,9 +414,16 @@ namespace PhysOfficeProj
                conn.Open();
                cmd.Connection = conn;
 
-               string patCombSql = "Select person_id,fname, midname, lname from person ";
+               
 
-               cmd.CommandText = patCombSql;
+               cmd.CommandText = "{ ? = CALL SP_PATIENTS_SELECT}";
+               cmd.CommandType = CommandType.StoredProcedure;
+
+               OdbcParameter input = cmd.Parameters.Add("@InputParam", OdbcType.Int);
+               input.Direction = ParameterDirection.Input;
+
+               OdbcParameter output = cmd.Parameters.Add("RETURN_VALUE",OdbcType.VarChar,100);
+               output.Direction = ParameterDirection.ReturnValue;
 
                readr = cmd.ExecuteReader();
 
@@ -433,7 +445,56 @@ namespace PhysOfficeProj
            }
           
 
-       }
+       }*/
+
+        /*
+         *   Method to populate patient combo box 
+         *   via the use of stored procedure 
+         * 
+         * 
+         * */
+        private void popPat()
+        {
+            try
+            {
+                //string oradb = "Data Source=localhost;User ID=PHYS_ADMIN;Password=hr;";
+
+               string connSrt=
+               "Data Source=XE;" +
+                "User ID=Phys_Admin;"+"Password=shnake24;";
+              
+               
+               OracleDataReader read;
+               OracleConnection conn = new OracleConnection(connSrt);
+               conn.Open();
+               
+
+               OracleCommand oraCom = new OracleCommand("SP_PATIENTS_SELECT",conn);
+               oraCom.CommandType = CommandType.StoredProcedure;
+               
+               oraCom.Parameters.Add("C_DBUSER",OracleType.Cursor).Direction = ParameterDirection.Output;
+
+              
+
+               read = oraCom.ExecuteReader();
+
+               while (read.Read())
+               {
+
+                   OracleNumber Id = read.GetOracleNumber(0);
+                   OracleString fname = read.GetOracleString(1);
+                   OracleString lname = read.GetOracleString(2);
+                   OracleString mname = read.GetOracleString(3);
+
+                   patCombo.Items.Add(fname + " " + mname + " " + lname);
+               }
+         
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("error" + ex.Message); 
+            }
+        }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -500,6 +561,7 @@ namespace PhysOfficeProj
 
 
            int lastVisit=0;
+           int lastLab = 0;
 
             if (patCombo.SelectedIndex < 0 || testCombo.SelectedIndex < 0 || labDatePick.Text == " " || statCombo.SelectedIndex < 0)
             {
@@ -542,7 +604,27 @@ namespace PhysOfficeProj
 
                         try
                         {
+                            conn.ConnectionString = "dsn=Physician;" + "Pwd=shnake24;";
+                            conn.Open();
+                            cmd.Connection = conn;
 
+                            string lastLabSql = "select max(visit#) from lab_order";
+
+                            cmd.CommandText = lastLabSql;
+
+                            readr = cmd.ExecuteReader();
+
+
+
+                            while (readr.Read())
+                            {
+                                lastLab = readr.GetInt16(0);
+                            }
+
+                            conn.Close();
+                            readr.Close();
+
+                                               
 
                             /// insert query 
 
@@ -562,10 +644,11 @@ namespace PhysOfficeProj
                             cmdIns.ExecuteNonQuery();
                             cmdIns.Parameters.Clear();
 
-                            cmdIns.CommandText = "Insert into PHYS_ADMIN.LAB_ORDER(LAB_ORDER#,VISIT#,COLLECT_DATE,STATUS,NOTES,TEST_NAME) values (:LAB_ORDER#,:VISIT#,:COLLECT_DATE,:STATUS,:NOTES,:TEST_NAME)";
+                            cmdIns.CommandText = "Insert into PHYS_ADMIN.LAB_ORDER(LAB_ORDER#,VISIT#,COLLECT_DATE,STATUS,NOTES,TEST_NAME) values (:LAB_ORDER#,:VISIT#,to_date(':COLLECT_DATE', 'mm/dd/yyyy hh24:mi:ss'),:STATUS,:NOTES,:TEST_NAME)";
 
                             cmdIns.Prepare();
 
+                            cmdIns.Parameters.AddWithValue("lab_order", lastLab);
                             cmdIns.Parameters.AddWithValue("VISIT#", lastVisit);
                             cmdIns.Parameters.AddWithValue("PERSON_ID", patCombo.SelectedIndex + 1);
                             cmdIns.Parameters.AddWithValue("COLLECT_DATE", labDatePick.Value);
